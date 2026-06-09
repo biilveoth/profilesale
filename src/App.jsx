@@ -1,6 +1,7 @@
 import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import logoLockup from "./logo2-lockup.png";
 import logoSymbol from "./logo2-symbol.png";
+import { englishTranslations } from "./translations";
 import {
   ArrowDownRight,
   ArrowRight,
@@ -24,7 +25,6 @@ import {
   Handshake,
   Headphones,
   HeartPulse,
-  Languages,
   LayoutTemplate,
   Mail,
   MapPin,
@@ -55,6 +55,131 @@ const LEAD_FORM_ENDPOINT =
 const SPLINE_SCENE =
   "https://prod.spline.design/6yrC-EDzrIZRlENf/scene.splinecode";
 const Spline = lazy(() => import("@splinetool/react-spline"));
+const LANGUAGE_STORAGE_KEY = "briftech-language";
+const translatableAttributes = ["aria-label", "placeholder", "title"];
+const reverseEnglishTranslations = Object.fromEntries(
+  Object.entries(englishTranslations).map(([vi, en]) => [en, vi]),
+);
+const translationEntries = {
+  en: Object.entries(englishTranslations).sort(([a], [b]) => b.length - a.length),
+  vi: Object.entries(reverseEnglishTranslations).sort(([a], [b]) => b.length - a.length),
+};
+
+function translateString(value, language) {
+  const dictionary = language === "en" ? englishTranslations : reverseEnglishTranslations;
+  const exact = dictionary[value];
+  if (exact) return exact;
+
+  let translated = value;
+  translationEntries[language].forEach(([source, target]) => {
+    if (translated.includes(source)) translated = translated.split(source).join(target);
+  });
+  return translated;
+}
+
+function translateTextNode(node, language) {
+  const value = node.nodeValue;
+  const normalized = value?.replace(/\s+/g, " ").trim();
+  if (!normalized) return;
+
+  const translated = translateString(normalized, language);
+  if (translated === normalized) return;
+
+  const leading = value.match(/^\s*/)?.[0] || "";
+  const trailing = value.match(/\s*$/)?.[0] || "";
+  node.nodeValue = `${leading}${translated}${trailing}`;
+}
+
+function translateElement(element, language) {
+  translatableAttributes.forEach((attribute) => {
+    const value = element.getAttribute?.(attribute);
+    if (!value) return;
+    const translated = translateString(value, language);
+    if (translated !== value) element.setAttribute(attribute, translated);
+  });
+}
+
+function translateTree(root, language) {
+  if (!root) return;
+
+  if (root.nodeType === Node.TEXT_NODE) {
+    translateTextNode(root, language);
+    return;
+  }
+
+  if (root.nodeType !== Node.ELEMENT_NODE) return;
+  translateElement(root, language);
+
+  const walker = document.createTreeWalker(
+    root,
+    NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT,
+  );
+
+  let node = walker.nextNode();
+  while (node) {
+    if (node.nodeType === Node.TEXT_NODE) translateTextNode(node, language);
+    if (node.nodeType === Node.ELEMENT_NODE) translateElement(node, language);
+    node = walker.nextNode();
+  }
+}
+
+function usePageLanguage() {
+  const [language, setLanguage] = useState(() => {
+    if (typeof window === "undefined") return "vi";
+    return window.localStorage.getItem(LANGUAGE_STORAGE_KEY) === "en" ? "en" : "vi";
+  });
+
+  useEffect(() => {
+    const root = document.getElementById("root");
+    if (!root) return undefined;
+
+    window.localStorage.setItem(LANGUAGE_STORAGE_KEY, language);
+    document.documentElement.lang = language;
+    document.documentElement.dataset.language = language;
+    document.title =
+      language === "en"
+        ? "BrifTech | Websites and systems built for SME growth"
+        : "BrifTech | Website và hệ thống giúp SME tăng trưởng";
+
+    const description = document.querySelector('meta[name="description"]');
+    description?.setAttribute(
+      "content",
+      language === "en"
+        ? "BrifTech designs and builds business websites, landing pages, e-commerce platforms, CRM, HRM and ERP solutions for small and medium-sized businesses."
+        : "BrifTech tư vấn và triển khai website doanh nghiệp, landing page, website bán hàng, CRM, HRM và ERP dành cho doanh nghiệp vừa và nhỏ.",
+    );
+
+    translateTree(root, language);
+
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.type === "characterData") {
+          translateTextNode(mutation.target, language);
+          return;
+        }
+
+        if (mutation.type === "attributes") {
+          translateElement(mutation.target, language);
+          return;
+        }
+
+        mutation.addedNodes.forEach((node) => translateTree(node, language));
+      });
+    });
+
+    observer.observe(root, {
+      subtree: true,
+      childList: true,
+      characterData: true,
+      attributes: true,
+      attributeFilter: translatableAttributes,
+    });
+
+    return () => observer.disconnect();
+  }, [language]);
+
+  return { language, setLanguage };
+}
 
 const primaryNav = [
   ["Dịch vụ", "#services"],
@@ -541,7 +666,7 @@ function SectionHeading({ eyebrow, title, description, align = "left" }) {
   );
 }
 
-function Header({ onLanguageNotice }) {
+function Header({ language, onLanguageChange }) {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -606,15 +731,21 @@ function Header({ onLanguageNotice }) {
 
           <div className="header-actions">
             <div className="language-switch" aria-label="Chọn ngôn ngữ">
-              <button type="button" className="active" aria-pressed="true">
+              <button
+                type="button"
+                className={language === "vi" ? "active" : ""}
+                onClick={() => onLanguageChange("vi")}
+                aria-pressed={language === "vi"}
+                title={language === "en" ? "Switch to Vietnamese" : "Chuyển sang tiếng Việt"}
+              >
                 VI
               </button>
               <button
                 type="button"
-                className="is-upcoming"
-                onClick={onLanguageNotice}
-                aria-pressed="false"
-                title="English version coming soon"
+                className={language === "en" ? "active" : ""}
+                onClick={() => onLanguageChange("en")}
+                aria-pressed={language === "en"}
+                title="Switch to English"
               >
                 EN
               </button>
@@ -1588,7 +1719,7 @@ function Footer() {
 }
 
 function App() {
-  const [toast, setToast] = useState("");
+  const { language, setLanguage } = usePageLanguage();
   const [showStickyZalo, setShowStickyZalo] = useState(false);
   const [pageProgress, setPageProgress] = useState(0);
 
@@ -1608,12 +1739,6 @@ function App() {
     document.querySelectorAll(".reveal").forEach((node) => observer.observe(node));
     return () => observer.disconnect();
   }, []);
-
-  useEffect(() => {
-    if (!toast) return undefined;
-    const timer = window.setTimeout(() => setToast(""), 3500);
-    return () => window.clearTimeout(timer);
-  }, [toast]);
 
   useEffect(() => {
     let frame = 0;
@@ -1662,7 +1787,7 @@ function App() {
   return (
     <>
       <a className="skip-link" href="#main-content">Bỏ qua điều hướng</a>
-      <Header onLanguageNotice={() => setToast("Phiên bản tiếng Anh đang được hoàn thiện.")} />
+      <Header language={language} onLanguageChange={setLanguage} />
       <main id="main-content">
         <Hero />
         <ServiceConstellation compact />
@@ -1698,10 +1823,6 @@ function App() {
         >
           <ChevronDown size={20} />
         </a>
-      </div>
-      <div className={`toast ${toast ? "is-visible" : ""}`} role="status" aria-live="polite">
-        <Languages size={18} />
-        <span>{toast}</span>
       </div>
     </>
   );
