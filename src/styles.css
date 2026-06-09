@@ -222,14 +222,15 @@ a:focus-visible {
   border-radius: 0;
   background: transparent;
   transition:
-    top 260ms cubic-bezier(.22, 1, .36, 1),
-    width 260ms cubic-bezier(.22, 1, .36, 1),
-    height 260ms cubic-bezier(.22, 1, .36, 1),
-    border-radius 260ms cubic-bezier(.22, 1, .36, 1),
-    background 180ms ease-out,
-    border-color 180ms ease-out,
-    box-shadow 180ms ease-out,
-    backdrop-filter 180ms ease-out;
+    top 620ms cubic-bezier(.16, 1, .3, 1),
+    width 720ms cubic-bezier(.16, 1, .3, 1),
+    height 580ms cubic-bezier(.16, 1, .3, 1),
+    border-radius 620ms cubic-bezier(.16, 1, .3, 1),
+    background 420ms ease-out,
+    border-color 420ms ease-out,
+    box-shadow 520ms ease-out,
+    backdrop-filter 420ms ease-out;
+  will-change: top, width, height, border-radius;
 }
 
 .site-header.is-scrolled,
@@ -252,6 +253,9 @@ a:focus-visible {
   align-items: center;
   gap: 24px;
   padding: 0 24px;
+  transition:
+    gap 620ms cubic-bezier(.16, 1, .3, 1),
+    padding 620ms cubic-bezier(.16, 1, .3, 1);
 }
 
 .site-header.is-scrolled .header-inner,
@@ -270,7 +274,10 @@ a:focus-visible {
   border-radius: 999px;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 180ms ease-out, left 260ms cubic-bezier(.22, 1, .36, 1), right 260ms cubic-bezier(.22, 1, .36, 1);
+  transition:
+    opacity 380ms ease-out 120ms,
+    left 620ms cubic-bezier(.16, 1, .3, 1),
+    right 620ms cubic-bezier(.16, 1, .3, 1);
 }
 
 .site-header.is-scrolled .scroll-progress,
@@ -306,17 +313,22 @@ a:focus-visible {
   font-size: 19px;
   font-weight: 600;
   line-height: 1;
+  transition:
+    gap 560ms cubic-bezier(.16, 1, .3, 1),
+    font-size 560ms cubic-bezier(.16, 1, .3, 1);
 }
 
-.wordmark-mark {
-  width: 32px;
+.wordmark-logo {
+  width: 42px;
   height: 32px;
-  display: grid;
-  place-items: center;
-  border-radius: 8px;
-  color: #fff;
-  background: var(--gradient-accent);
-  box-shadow: inset 0 1px rgba(255, 255, 255, 0.28), 0 12px 28px rgba(47, 140, 255, 0.24);
+  display: block;
+  flex: 0 0 auto;
+  object-fit: contain;
+  filter: drop-shadow(0 8px 18px rgba(47, 140, 255, .28));
+  transition:
+    width 560ms cubic-bezier(.16, 1, .3, 1),
+    height 560ms cubic-bezier(.16, 1, .3, 1),
+    filter 420ms ease-out;
 }
 
 .desktop-nav {
@@ -325,6 +337,7 @@ a:focus-visible {
   display: flex;
   align-items: center;
   gap: 30px;
+  transition: gap 560ms cubic-bezier(.16, 1, .3, 1);
 }
 
 .desktop-nav a {
@@ -332,7 +345,9 @@ a:focus-visible {
   color: var(--color-text-secondary);
   font-size: 14px;
   font-weight: 500;
-  transition: color 160ms ease-out;
+  transition:
+    color 160ms ease-out,
+    font-size 560ms cubic-bezier(.16, 1, .3, 1);
 }
 
 .desktop-nav a::after {
@@ -381,9 +396,9 @@ a:focus-visible {
   font-size: 17px;
 }
 
-.site-header.is-scrolled .wordmark-mark,
-.site-header.menu-is-open .wordmark-mark {
-  width: 30px;
+.site-header.is-scrolled .wordmark-logo,
+.site-header.menu-is-open .wordmark-logo {
+  width: 39px;
   height: 30px;
 }
 
@@ -413,6 +428,7 @@ a:focus-visible {
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.045);
   box-shadow: inset 0 0 0 1px rgba(255,255,255,.09), 0 10px 26px rgba(0,0,0,.22);
+  transition: height 560ms cubic-bezier(.16, 1, .3, 1);
 }
 
 .language-switch button {
@@ -426,6 +442,12 @@ a:focus-visible {
   font-size: 12px;
   font-weight: 600;
   cursor: pointer;
+  transition:
+    min-width 560ms cubic-bezier(.16, 1, .3, 1),
+    height 560ms cubic-bezier(.16, 1, .3, 1),
+    font-size 560ms cubic-bezier(.16, 1, .3, 1),
+    color 160ms ease-out,
+    background 160ms ease-out;
 }
 
 .language-switch button.active {
@@ -523,6 +545,13 @@ a:focus-visible {
   min-height: 40px;
   padding: 0 17px;
   white-space: nowrap;
+  transition:
+    min-height 560ms cubic-bezier(.16, 1, .3, 1),
+    padding 560ms cubic-bezier(.16, 1, .3, 1),
+    transform 200ms ease-out,
+    background 200ms ease-out,
+    color 200ms ease-out,
+    box-shadow 200ms ease-out;
 }
 
 .zalo-badge {
@@ -740,6 +769,8 @@ a:focus-visible {
   z-index: 1;
   overflow: hidden;
   background: #070a0f;
+  touch-action: pan-y pinch-zoom;
+  overscroll-behavior-y: auto;
 }
 
 .spline-stage > div:not(.spline-aura):not(.spline-loading):not(.spline-fallback) {
@@ -747,16 +778,21 @@ a:focus-visible {
   height: 100%;
   opacity: 0;
   transform: scale(1.04);
-  transition: opacity 500ms ease-out;
+  transition:
+    opacity 900ms ease-out,
+    transform 1400ms cubic-bezier(.16, 1, .3, 1);
+  will-change: opacity, transform;
 }
 
 .spline-stage.is-loaded > div:not(.spline-aura):not(.spline-loading):not(.spline-fallback) {
   opacity: 1;
+  transform: scale(1);
 }
 
 .spline-stage canvas {
   width: 100% !important;
   height: 100% !important;
+  touch-action: pan-y pinch-zoom;
 }
 
 .spline-stage::after {
@@ -3080,6 +3116,20 @@ a:focus-visible {
   padding-bottom: 68px;
 }
 
+.footer-logo {
+  display: inline-flex;
+  width: 190px;
+  max-width: 100%;
+}
+
+.footer-logo img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 14px 30px rgba(47, 140, 255, .2));
+}
+
 .footer-brand p {
   max-width: 390px;
   margin: 22px 0 0;
@@ -4207,8 +4257,8 @@ a:focus-visible {
     font-size: 17px;
   }
 
-  .wordmark-mark {
-    width: 30px;
+  .wordmark-logo {
+    width: 39px;
     height: 30px;
   }
 

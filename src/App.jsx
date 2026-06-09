@@ -1,4 +1,6 @@
 import { lazy, Suspense, useEffect, useRef, useState } from "react";
+import logoLockup from "./logo2-lockup.png";
+import logoSymbol from "./logo2-symbol.png";
 import {
   ArrowDownRight,
   ArrowRight,
@@ -388,13 +390,13 @@ const pricing = [
     oldPrice: "8.000.000đ",
     price: "5.000.000đ",
     time: "7–14 ngày",
-    scope: "Không giới hạn cứng số trang trong phạm vi",
+    scope: "Số trang dự kiến theo phạm vi đã thống nhất",
     features: [
       "Tư vấn cấu trúc & hỗ trợ biên tập nội dung",
       "UI/UX thiết kế theo thương hiệu",
       "CMS để doanh nghiệp chủ động cập nhật",
       "SEO, GA4 và Search Console nền tảng",
-      "Điều chỉnh đến nghiệm thu theo phạm vi",
+      "Chỉnh sửa không giới hạn trong thiết kế/phạm vi đã duyệt",
     ],
     action: "Tư vấn gói doanh nghiệp",
     recommended: true,
@@ -544,7 +546,9 @@ function Header({ onLanguageNotice }) {
             ? Math.min(1, Math.max(0, window.scrollY / scrollableHeight))
             : 0;
 
-        setScrolled(window.scrollY > 24);
+        setScrolled((current) =>
+          current ? window.scrollY > 14 : window.scrollY > 48,
+        );
         setScrollProgress(progress);
       });
     };
@@ -578,7 +582,7 @@ function Header({ onLanguageNotice }) {
       <header className={`site-header ${scrolled ? "is-scrolled" : ""} ${open ? "menu-is-open" : ""}`}>
         <div className="container header-inner">
           <a href="#top" className="wordmark" aria-label="BrifTech - Trang chủ">
-            <span className="wordmark-mark">B</span>
+            <img className="wordmark-logo" src={logoSymbol} alt="" />
             <span>BrifTech</span>
           </a>
 
@@ -666,7 +670,13 @@ function Hero() {
 
       if (!isInsideStage) return;
 
-      event.stopImmediatePropagation();
+      const isVerticalScroll =
+        Math.abs(event.deltaY) > Math.abs(event.deltaX) &&
+        Math.abs(event.deltaY) > 0.5;
+
+      if (isVerticalScroll) {
+        event.stopImmediatePropagation();
+      }
     };
 
     window.addEventListener("wheel", handleWheel, {
@@ -1376,7 +1386,9 @@ function Footer() {
     <footer className="site-footer">
       <div className="container footer-main">
         <div className="footer-brand">
-          <a href="#top" className="wordmark"><span className="wordmark-mark">B</span><span>BrifTech</span></a>
+          <a href="#top" className="footer-logo" aria-label="BrifTech - Trang chủ">
+            <img src={logoLockup} alt="BrifTech" />
+          </a>
           <p>
             Đối tác tư vấn và triển khai website, web app và hệ thống quản trị
             giúp doanh nghiệp vừa và nhỏ tăng trưởng và vận hành hiệu quả hơn.
