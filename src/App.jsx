@@ -61,6 +61,14 @@ const primaryNav = [
   ["FAQ", "#faq"],
 ];
 
+const trustItems = [
+  "100+ dự án triển khai",
+  "BA đa domain",
+  "UI/UX thiết kế riêng",
+  "Bàn giao source code",
+  "Bảo hành 12 tháng",
+];
+
 const websiteCapabilities = [
   {
     icon: LayoutTemplate,
@@ -767,16 +775,23 @@ function Hero() {
       </section>
 
       <section className="trust-strip" aria-label="Năng lực BrifTech">
-        <div className="container trust-inner">
-          <span>100+ dự án triển khai</span>
-          <i />
-          <span>BA đa domain</span>
-          <i />
-          <span>UI/UX thiết kế riêng</span>
-          <i />
-          <span>Bàn giao source code</span>
-          <i />
-          <span>Bảo hành 12 tháng</span>
+        <div className="trust-inner">
+          <div className="trust-track">
+            {[false, true].map((duplicate) => (
+              <div
+                className="trust-group"
+                aria-hidden={duplicate || undefined}
+                key={duplicate ? "duplicate" : "primary"}
+              >
+                {trustItems.map((item, index) => (
+                  <span className="trust-item" key={item}>
+                    {item}
+                    {index < trustItems.length - 1 && <i aria-hidden="true" />}
+                  </span>
+                ))}
+              </div>
+            ))}
+          </div>
         </div>
       </section>
     </>
