@@ -36,6 +36,7 @@ import {
   ReceiptText,
   Rocket,
   Search,
+  Send,
   ShieldCheck,
   ShoppingBag,
   Sparkles,
@@ -48,6 +49,9 @@ import {
 
 const ZALO_URL =
   import.meta.env.VITE_ZALO_URL || "https://zalo.me/0972229142";
+const LEAD_FORM_ENDPOINT =
+  import.meta.env.VITE_LEAD_FORM_ENDPOINT ||
+  "https://formsubmit.co/ajax/biilveoth@gmail.com";
 const SPLINE_SCENE =
   "https://prod.spline.design/6yrC-EDzrIZRlENf/scene.splinecode";
 const Spline = lazy(() => import("@splinetool/react-spline"));
@@ -1374,23 +1378,144 @@ function FAQ() {
   );
 }
 
-function FooterZaloBanner() {
+function LeadForm() {
+  const [status, setStatus] = useState("idle");
+  const [feedback, setFeedback] = useState("");
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const data = new FormData(form);
+
+    data.append("_subject", "Lead mới từ BrifTech Landing Page");
+    data.append("_template", "table");
+    data.append("_captcha", "false");
+    data.append("Nguồn", window.location.href);
+
+    setStatus("submitting");
+    setFeedback("");
+
+    try {
+      const response = await fetch(LEAD_FORM_ENDPOINT, {
+        method: "POST",
+        headers: { Accept: "application/json" },
+        body: data,
+      });
+
+      if (!response.ok) throw new Error("Không thể gửi biểu mẫu");
+
+      form.reset();
+      setStatus("success");
+      setFeedback("Thông tin đã được gửi. BrifTech sẽ liên hệ với bạn trong thời gian sớm nhất.");
+    } catch {
+      setStatus("error");
+      setFeedback("Chưa thể gửi thông tin. Bạn vui lòng thử lại hoặc liên hệ trực tiếp qua Zalo.");
+    }
+  };
+
   return (
-    <section className="footer-zalo-section" aria-label="Nhận báo giá qua Zalo">
-      <div className="container">
-        <div className="footer-zalo-banner reveal">
-          <div className="footer-zalo-copy">
-            <ZaloBadge />
+    <section className="lead-section" id="contact">
+      <div className="container lead-layout">
+        <div className="lead-copy reveal">
+          <span className="eyebrow">Bắt đầu từ một cuộc trao đổi</span>
+          <h2>Để lại bài toán. BrifTech đề xuất hướng đi phù hợp.</h2>
+          <p>
+            Chia sẻ ngắn nhu cầu hiện tại, đội ngũ phụ trách sẽ liên hệ để làm rõ
+            mục tiêu, phạm vi và phương án triển khai phù hợp với doanh nghiệp.
+          </p>
+          <div className="lead-benefits">
+            <span><CheckCircle2 size={17} /> Tư vấn trực tiếp với người phụ trách</span>
+            <span><CheckCircle2 size={17} /> Đề xuất phạm vi và ngân sách sơ bộ</span>
+            <span><CheckCircle2 size={17} /> Không phát sinh nghĩa vụ hợp tác</span>
+          </div>
+          <div className="lead-direct">
+            <span>Muốn trao đổi ngay?</span>
+            <a href={ZALO_URL} target="_blank" rel="noreferrer">
+              <MessageCircle size={17} /> Chat Zalo 0972 229 142
+            </a>
+          </div>
+        </div>
+
+        <form className="lead-form reveal" onSubmit={handleSubmit}>
+          <div className="lead-form-heading">
+            <span><Send size={18} /></span>
             <div>
-              <h2>Nhắn Zalo nhận báo giá ngay</h2>
-              <p>Trao đổi trực tiếp với đội ngũ phụ trách giải pháp</p>
+              <h3>Nhận tư vấn miễn phí</h3>
+              <p>BrifTech sẽ phản hồi trong giờ làm việc gần nhất.</p>
             </div>
           </div>
-          <a className="footer-zalo-action" href={ZALO_URL} target="_blank" rel="noreferrer">
-            <ZaloBadge small />
-            <span>Chat Zalo 0972 229 142</span>
-          </a>
-        </div>
+
+          <div className="lead-form-grid">
+            <label>
+              <span>Họ và tên <i>*</i></span>
+              <input name="Họ và tên" type="text" autoComplete="name" placeholder="Nguyễn Văn A" required />
+            </label>
+            <label>
+              <span>Số điện thoại <i>*</i></span>
+              <input
+                name="Số điện thoại"
+                type="tel"
+                inputMode="tel"
+                autoComplete="tel"
+                placeholder="09xx xxx xxx"
+                pattern="[0-9+().\\s-]{8,20}"
+                required
+              />
+            </label>
+            <label>
+              <span>Doanh nghiệp</span>
+              <input name="Doanh nghiệp" type="text" autoComplete="organization" placeholder="Tên doanh nghiệp của bạn" />
+            </label>
+            <label>
+              <span>Nhu cầu quan tâm</span>
+              <select name="Nhu cầu">
+                <option value="Website doanh nghiệp">Website doanh nghiệp</option>
+                <option value="Landing page">Landing page</option>
+                <option value="Website bán hàng">Website bán hàng</option>
+                <option value="CRM / HRM / ERP">CRM / HRM / ERP</option>
+                <option value="Bảo trì / SEO">Bảo trì / SEO</option>
+                <option value="Chưa xác định">Cần BrifTech tư vấn</option>
+              </select>
+            </label>
+            <label>
+              <span>Ngân sách dự kiến</span>
+              <select name="Ngân sách">
+                <option value="Cần tư vấn">Cần tư vấn</option>
+                <option value="Dưới 5 triệu">Dưới 5 triệu</option>
+                <option value="5 - 10 triệu">5 - 10 triệu</option>
+                <option value="10 - 25 triệu">10 - 25 triệu</option>
+                <option value="Trên 25 triệu">Trên 25 triệu</option>
+              </select>
+            </label>
+            <label className="lead-form-message">
+              <span>Bài toán cần giải quyết</span>
+              <textarea
+                name="Bài toán"
+                rows="4"
+                placeholder="Ví dụ: Website hiện tại khó quản trị, cần thiết kế lại để tăng khách hàng..."
+              />
+            </label>
+          </div>
+
+          <input className="lead-honeypot" type="text" name="_honey" tabIndex="-1" autoComplete="off" />
+
+          <label className="lead-consent">
+            <input type="checkbox" required />
+            <span>Tôi đồng ý để BrifTech liên hệ và tư vấn theo thông tin đã cung cấp.</span>
+          </label>
+
+          <button className="button button-primary lead-submit" type="submit" disabled={status === "submitting"}>
+            <Send size={17} />
+            {status === "submitting" ? "Đang gửi thông tin..." : "Gửi yêu cầu tư vấn"}
+          </button>
+
+          {feedback && (
+            <p className={`lead-feedback is-${status}`} role="status" aria-live="polite">
+              {status === "success" ? <CheckCircle2 size={17} /> : <MessageCircle size={17} />}
+              {feedback}
+            </p>
+          )}
+        </form>
       </div>
     </section>
   );
@@ -1551,7 +1676,7 @@ function App() {
         <Commitments />
         <AboutBrifTech />
         <FAQ />
-        <FooterZaloBanner />
+        <LeadForm />
       </main>
       <Footer />
       <div className={`floating-actions ${showStickyZalo ? "is-visible" : ""}`} aria-label="Hành động nhanh">

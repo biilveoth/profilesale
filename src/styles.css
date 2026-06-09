@@ -3026,90 +3026,296 @@ a:focus-visible {
   opacity: 1;
 }
 
-.footer-zalo-section {
-  padding: 58px 0 42px;
+.lead-section {
+  position: relative;
+  overflow: hidden;
+  padding: 88px 0;
   border-top: 1px solid rgba(88,166,255,.14);
   background:
-    radial-gradient(circle at 50% 0%, rgba(47,140,255,.16), transparent 40%),
-    linear-gradient(180deg, rgba(47,140,255,.045), transparent 56%),
+    radial-gradient(circle at 18% 36%, rgba(47,140,255,.16), transparent 30%),
+    radial-gradient(circle at 84% 28%, rgba(107,214,255,.08), transparent 24%),
+    linear-gradient(180deg, rgba(47,140,255,.045), transparent 68%),
     #070a0f;
 }
 
-.footer-zalo-banner {
-  position: relative;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 26px;
-  min-height: 92px;
-  padding: 16px 18px 16px 24px;
-  border-radius: 999px;
-  background:
-    linear-gradient(#0b1018, #0b1018) padding-box,
-    var(--gradient-border) border-box;
-  border: 1px solid transparent;
-  box-shadow: 0 22px 70px rgba(0,0,0,.22), 0 14px 46px rgba(47,140,255,.12);
-}
-
-.footer-zalo-banner::before {
+.lead-section::before {
   content: "";
   position: absolute;
-  inset: 1px;
-  border-radius: inherit;
-  background:
-    linear-gradient(90deg, rgba(47,140,255,.12), transparent 28%, rgba(88,166,255,.08) 72%, rgba(107,214,255,.08)),
-    repeating-linear-gradient(90deg, rgba(88,166,255,.032) 0 1px, transparent 1px 34px);
-  opacity: .58;
+  inset: 0;
   pointer-events: none;
+  background:
+    linear-gradient(rgba(47,140,255,.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(47,140,255,.025) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: linear-gradient(to bottom, transparent, black 16%, black 84%, transparent);
 }
 
-.footer-zalo-copy,
-.footer-zalo-action {
+.lead-layout {
   position: relative;
   z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, .86fr) minmax(520px, 1.14fr);
+  align-items: center;
+  gap: 72px;
 }
 
-.footer-zalo-copy {
+.lead-copy h2 {
+  max-width: 560px;
+  margin: 17px 0 20px;
+  font-size: clamp(36px, 4vw, 54px);
+  font-weight: 600;
+  line-height: 1.08;
+}
+
+.lead-copy > p {
+  max-width: 560px;
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: 16px;
+  line-height: 1.72;
+}
+
+.lead-benefits {
+  display: grid;
+  gap: 12px;
+  margin-top: 30px;
+}
+
+.lead-benefits span {
   display: flex;
   align-items: center;
-  gap: 18px;
+  gap: 10px;
+  color: rgba(255,255,255,.78);
+  font-size: 14px;
 }
 
-.footer-zalo-copy h2 {
-  margin: 0 0 7px;
-  font-size: clamp(21px, 1.7vw, 26px);
+.lead-benefits svg {
+  flex: 0 0 auto;
+  color: var(--color-primary-hover);
+}
+
+.lead-direct {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 34px;
+  color: var(--color-text-muted);
+  font-size: 13px;
+}
+
+.lead-direct a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--color-primary-hover);
+  font-weight: 600;
+}
+
+.lead-direct a:hover {
+  color: #fff;
+}
+
+.lead-form {
+  position: relative;
+  overflow: hidden;
+  padding: 34px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background:
+    linear-gradient(rgba(10, 17, 28, .96), rgba(8, 14, 24, .96)) padding-box,
+    var(--gradient-border) border-box;
+  box-shadow:
+    0 30px 90px rgba(0,0,0,.3),
+    0 18px 54px rgba(47,140,255,.1),
+    inset 0 1px rgba(255,255,255,.05);
+}
+
+.lead-form::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 2px;
+  background:
+    linear-gradient(90deg, var(--color-cyan-soft), var(--color-primary-hover), transparent);
+  box-shadow: 0 0 24px rgba(47,140,255,.42);
+}
+
+.lead-form-heading {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 28px;
+}
+
+.lead-form-heading > span {
+  width: 44px;
+  height: 44px;
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(88,166,255,.28);
+  border-radius: 8px;
+  background: rgba(47,140,255,.11);
+  color: var(--color-primary-hover);
+  box-shadow: inset 0 1px rgba(255,255,255,.05), 0 12px 30px rgba(47,140,255,.1);
+}
+
+.lead-form-heading h3 {
+  margin: 0 0 5px;
+  font-size: 22px;
   font-weight: 600;
   line-height: 1.1;
 }
 
-.footer-zalo-copy p {
+.lead-form-heading p {
   margin: 0;
   color: var(--color-text-muted);
-  font-size: 15px;
+  font-size: 13px;
 }
 
-.footer-zalo-action {
-  min-height: 48px;
-  flex: 0 0 auto;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  padding: 0 24px;
-  border-radius: 999px;
-  background: var(--gradient-accent);
+.lead-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.lead-form label:not(.lead-consent) {
+  display: grid;
+  gap: 8px;
+}
+
+.lead-form label > span {
+  color: rgba(255,255,255,.72);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.lead-form label > span i {
+  color: var(--color-primary-hover);
+  font-style: normal;
+}
+
+.lead-form input,
+.lead-form select,
+.lead-form textarea {
+  width: 100%;
+  min-width: 0;
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 8px;
+  outline: 0;
+  background: rgba(255,255,255,.035);
   color: #fff;
-  box-shadow: 0 14px 36px rgba(47,140,255,.26), inset 0 1px rgba(255,255,255,.22);
+  font: inherit;
   font-size: 14px;
-  font-weight: 700;
-  transition: transform 180ms ease-out, box-shadow 180ms ease-out, filter 180ms ease-out;
+  transition: border-color 180ms ease, background 180ms ease, box-shadow 180ms ease;
 }
 
-.footer-zalo-action:hover {
-  filter: saturate(1.12) brightness(1.05);
-  transform: translateY(-2px);
-  box-shadow: 0 22px 54px rgba(47,140,255,.36), inset 0 1px rgba(255,255,255,.26);
+.lead-form input,
+.lead-form select {
+  min-height: 48px;
+  padding: 0 14px;
+}
+
+.lead-form textarea {
+  min-height: 110px;
+  resize: vertical;
+  padding: 13px 14px;
+  line-height: 1.55;
+}
+
+.lead-form input::placeholder,
+.lead-form textarea::placeholder {
+  color: rgba(255,255,255,.32);
+}
+
+.lead-form select {
+  color-scheme: dark;
+  cursor: pointer;
+}
+
+.lead-form input:focus,
+.lead-form select:focus,
+.lead-form textarea:focus {
+  border-color: rgba(88,166,255,.62);
+  background: rgba(47,140,255,.06);
+  box-shadow: 0 0 0 3px rgba(47,140,255,.12), 0 0 28px rgba(47,140,255,.08);
+}
+
+.lead-form-message {
+  grid-column: 1 / -1;
+}
+
+.lead-honeypot {
+  position: absolute !important;
+  left: -9999px !important;
+  width: 1px !important;
+  height: 1px !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+.lead-consent {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 18px 0;
+  cursor: pointer;
+}
+
+.lead-consent input {
+  width: 17px;
+  height: 17px;
+  min-height: 0;
+  flex: 0 0 auto;
+  margin-top: 1px;
+  accent-color: var(--color-primary);
+}
+
+.lead-consent span {
+  color: var(--color-text-muted) !important;
+  font-weight: 400 !important;
+  line-height: 1.5;
+}
+
+.lead-submit {
+  width: 100%;
+  cursor: pointer;
+}
+
+.lead-submit:disabled {
+  cursor: wait;
+  opacity: .72;
+  transform: none;
+}
+
+.lead-feedback {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 16px 0 0;
+  padding: 12px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.lead-feedback svg {
+  flex: 0 0 auto;
+  margin-top: 1px;
+}
+
+.lead-feedback.is-success {
+  border: 1px solid rgba(83,157,82,.28);
+  background: rgba(83,157,82,.09);
+  color: #a9dda8;
+}
+
+.lead-feedback.is-error {
+  border: 1px solid rgba(255,178,33,.28);
+  background: rgba(255,178,33,.08);
+  color: #ffd58a;
 }
 
 .site-footer {
@@ -3641,6 +3847,20 @@ a:focus-visible {
   .faq-copy {
     position: static;
     max-width: 720px;
+  }
+
+  .lead-layout {
+    grid-template-columns: 1fr;
+    gap: 46px;
+  }
+
+  .lead-copy,
+  .lead-copy > p {
+    max-width: 720px;
+  }
+
+  .lead-form {
+    width: min(100%, 720px);
   }
 }
 
@@ -4239,32 +4459,35 @@ a:focus-visible {
     padding-inline: 20px;
   }
 
-  .footer-zalo-section {
-    padding: 44px 0 36px;
+  .lead-section {
+    padding: 64px 0;
   }
 
-  .footer-zalo-banner {
-    align-items: stretch;
-    flex-direction: column;
-    gap: 22px;
-    padding: 24px 20px;
-    border-radius: 20px;
+  .lead-layout {
+    gap: 34px;
   }
 
-  .footer-zalo-copy {
+  .lead-copy h2 {
+    font-size: 32px;
+  }
+
+  .lead-direct {
     align-items: flex-start;
+    flex-direction: column;
+    gap: 8px;
   }
 
-  .footer-zalo-copy h2 {
-    font-size: 22px;
+  .lead-form {
+    padding: 24px 18px;
   }
 
-  .footer-zalo-copy p {
-    font-size: 13px;
+  .lead-form-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
   }
 
-  .footer-zalo-action {
-    width: 100%;
+  .lead-form-message {
+    grid-column: auto;
   }
 
   .footer-main {
