@@ -2802,11 +2802,16 @@ a:focus-visible {
   text-transform: uppercase;
 }
 
-.pricing-head s {
+.pricing-head s,
+.pricing-scope-label {
   display: block;
   min-height: 24px;
   color: var(--color-text-muted);
   font-size: 13px;
+}
+
+.pricing-scope-label {
+  text-decoration: none;
 }
 
 .pricing-head strong {

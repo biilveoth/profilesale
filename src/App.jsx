@@ -183,7 +183,7 @@ function usePageLanguage() {
 
 const primaryNav = [
   ["Dịch vụ", "#services"],
-  ["Dự án", "#projects"],
+  // ["Dự án", "#projects"], // Bật lại khi section Projects sẵn sàng công bố.
   ["Giá", "#pricing"],
   ["Cam kết", "#commitments"],
   ["Về BrifTech", "#about"],
@@ -509,7 +509,7 @@ const pricing = [
     name: "Landing Page",
     tag: "Khởi động nhanh",
     oldPrice: "3.000.000đ",
-    price: "1.888.000đ",
+    price: "1.999.000đ",
     time: "3–5 ngày",
     scope: "1 trang chuyển đổi, tối đa 8 section",
     features: [
@@ -525,7 +525,7 @@ const pricing = [
     name: "Website doanh nghiệp",
     tag: "Đề xuất",
     oldPrice: "8.000.000đ",
-    price: "5.000.000đ",
+    price: "4.999.000đ",
     time: "7–14 ngày",
     scope: "Số trang dự kiến theo phạm vi đã thống nhất",
     features: [
@@ -542,7 +542,7 @@ const pricing = [
     name: "Website bán hàng",
     tag: "Tăng trưởng",
     oldPrice: "15.000.000đ",
-    price: "10.000.000đ",
+    price: "9.999.000đ",
     time: "3–4 tuần",
     scope: "Phạm vi bán hàng cơ bản",
     features: [
@@ -558,7 +558,8 @@ const pricing = [
     name: "CRM / HRM / ERP",
     tag: "Theo yêu cầu",
     oldPrice: "Theo phạm vi",
-    price: "Từ 25.000.000đ",
+    oldPriceIsLabel: true,
+    price: "Từ 24.999.000đ",
     time: "Từ 1 tháng",
     scope: "Báo giá sau phân tích BA",
     features: [
@@ -1403,7 +1404,11 @@ function Pricing() {
                 <span className="plan-tag">{plan.tag}</span>
                 <h3>{plan.name}</h3>
                 <div className="promotion">Mức giá ưu đãi hiện hành</div>
-                <s>{plan.oldPrice}</s>
+                {plan.oldPrice && (
+                  plan.oldPriceIsLabel
+                    ? <span className="pricing-scope-label">{plan.oldPrice}</span>
+                    : <s>{plan.oldPrice}</s>
+                )}
                 <strong className={plan.price.startsWith("Từ") ? "is-long" : ""}>
                   {plan.price}
                 </strong>
@@ -1681,7 +1686,7 @@ function Footer() {
         <div className="footer-links">
           <span>Khám phá</span>
           <a href="#difference">Vì sao chọn BrifTech</a>
-          <a href="#projects">Dự án</a>
+          {/* <a href="#projects">Dự án</a> */}
           <a href="#process">Quy trình</a>
           <a href="#about">Về BrifTech</a>
           <a href="#faq">Câu hỏi thường gặp</a>
@@ -1794,7 +1799,7 @@ function App() {
         <WebsiteCapabilities />
         <Difference />
         <Services />
-        <Projects />
+        {/* <Projects /> */}
         <Domains />
         <Process />
         <Pricing />
